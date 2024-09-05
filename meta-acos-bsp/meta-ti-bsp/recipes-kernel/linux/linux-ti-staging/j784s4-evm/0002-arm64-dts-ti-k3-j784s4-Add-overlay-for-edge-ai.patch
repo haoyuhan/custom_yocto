@@ -1,0 +1,47 @@
+From 28f9e69bfce008811d9c0c8fb5a1a2f7b6fc8d07 Mon Sep 17 00:00:00 2001
+From: Rahul T R <r-ravikumar@ti.com>
+Date: Fri, 21 Oct 2022 18:28:37 +0530
+Subject: [PATCH 2/2] arm64: dts: ti: k3-j784s4: Add overlay for edge ai
+
+Add overlay for RTOS memory map for edge ai with
+DSS and other pheriperals enabled
+
+Signed-off-by: Rahul T R <r-ravikumar@ti.com>
+---
+ arch/arm64/boot/dts/ti/Makefile                   |  1 +
+ arch/arm64/boot/dts/ti/k3-j784s4-edgeai-apps.dtso | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j784s4-edgeai-apps.dtso
+
+diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
+index 44ada74d6992..bd44cb672fb7 100644
+--- a/arch/arm64/boot/dts/ti/Makefile
++++ b/arch/arm64/boot/dts/ti/Makefile
+@@ -128,6 +128,7 @@ dtb-$(CONFIG_ARCH_K3) += k3-j784s4-evm-quad-port-eth-exp1.dtbo
+ dtb-$(CONFIG_ARCH_K3) += k3-j784s4-evm-usxgmii-exp1-exp2.dtbo
+ dtb-$(CONFIG_ARCH_K3) += k3-j784s4-evm-virt-mac-client.dtbo
+ dtb-$(CONFIG_ARCH_K3) += k3-j784s4-vision-apps.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-j784s4-edgeai-apps.dtbo
+ 
+ # Common overlays across AM62 family of boards
+ dtb-$(CONFIG_ARCH_K3) += k3-am62x-sk-eqep.dtbo
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-edgeai-apps.dtso b/arch/arm64/boot/dts/ti/k3-j784s4-edgeai-apps.dtso
+new file mode 100644
+index 000000000000..eee02b0538b0
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-edgeai-apps.dtso
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * vision-apps: device-tree overlay
++ *
++ * Copyright (C) 2019 - 2022 Texas Instruments Incorporated - http://www.ti.com/
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include "k3-j784s4-rtos-memory-map.dtsi"
+-- 
+2.34.1
+

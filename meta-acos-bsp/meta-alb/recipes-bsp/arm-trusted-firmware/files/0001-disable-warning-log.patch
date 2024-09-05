@@ -1,0 +1,37 @@
+From c45267467369f614da37d470533aa5a7935e5118 Mon Sep 17 00:00:00 2001
+From: hantao <tom.han@autocore.ai>
+Date: Fri, 29 Mar 2024 19:27:59 +0800
+Subject: [PATCH] disable warning log
+
+---
+ plat/nxp/s32/s32_common.mk | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/plat/nxp/s32/s32_common.mk b/plat/nxp/s32/s32_common.mk
+index 8ca800121..119207c45 100755
+--- a/plat/nxp/s32/s32_common.mk
++++ b/plat/nxp/s32/s32_common.mk
+@@ -143,7 +143,10 @@ BL31_SOURCES += \
+ 			drivers/arm/css/scmi/scmi_pwr_dmn_proto.c \
+ 			drivers/arm/css/scmi/scmi_sys_pwr_proto.c \
+ 
+-DTC_FLAGS		+= -Wno-unit_address_vs_reg
++DTC_FLAGS += -Wno-unit_address_vs_reg
++DTC_FLAGS += -Wno-avoid_unnecessary_addr_size
++DTC_FLAGS += -Wno-unique_unit_address
++DTC_FLAGS += -Wno-interrupt_provider
+ 
+ all: check_dtc_version
+ check_dtc_version:
+@@ -275,7 +278,7 @@ define run_mkimage
+ cd ${BL33DIR} && \
+ 	${MKIMAGE} \
+ 	-e $1 -a $2 -T s32ccimage \
+-	-n $3 -d $4 $5
++	-n $3 -d $4 $5 -v
+ endef
+ 
+ define hexfilesize
+-- 
+2.42.0
+

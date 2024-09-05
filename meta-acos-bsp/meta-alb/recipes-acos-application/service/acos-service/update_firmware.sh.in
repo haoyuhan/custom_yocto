@@ -1,0 +1,10 @@
+#!/bin/sh
+if [ ! -f @prefix@/.sja1110_install_info.txt ] && [ -f @base_libdir@/firmware/sja1110_uc.bin ]; then
+        @base_bindir@/ifconfig pfe0 hw ether ac:ac:ac:ac:ac:ac
+        @base_sbindir@/ip address add 192.168.0.20/24 dev pfe0
+        @base_bindir@/tftp -p 192.168.0.201 -l @base_libdir@/firmware/sja1110_uc.bin -r flash.bin
+        if [ $? -eq 0 ]; then
+                echo "Install sja1110_uc.bin success" >> @prefix@/.sja1110_install_info.txt;
+				echo "Install sja1110_uc.bin success" 
+        fi
+fi

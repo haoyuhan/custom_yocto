@@ -1,0 +1,35 @@
+#!/bin/bash - 
+#===============================================================================
+#
+#          FILE:  repart.sh
+# 
+#         USAGE:  ./repart.sh 
+# 
+#   DESCRIPTION:  
+# 
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR: YOUR NAME (), 
+#       COMPANY: 
+#       CREATED: 2024年05月23日 11时05分29秒 CST
+#      REVISION:  ---
+#===============================================================================
+# If /.autorepart placed, the data will resizepart
+if [ -f /usr/sbin/.autorepart ]; then
+        echo "ACOS Repart data ..."
+	echo 'w' | /usr/sbin/fdisk @repart-dev@
+        /usr/sbin/parted --script @repart-dev@  unit Mib  mkpart custom ext4 @IMAGE_CUSTOM_START@Mib @IMAGE_CUSTOM_END@Mib name 4 'custom'
+	/usr/sbin/mkfs.ext4 -t ext4 /dev/mmcblk0p4
+        /usr/sbin/parted --script @repart-dev@ unit Mib mkpart data ext4 @IMAGE_DATA_START@Mib @IMAGE_DATA_END@Mib name 5 'data'
+	/usr/sbin/parted --script @repart-dev@ resizepart @repart-no@ 100%
+        /usr/sbin/mkfs.ext4 -t ext4 /dev/mmcblk0p5
+	/usr/sbin/partprobe
+	systemctl disable repart
+        echo " * repart done, rebooting the system?"
+        exit 0
+fi
+exit 0
+
+

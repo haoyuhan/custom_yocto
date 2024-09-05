@@ -1,0 +1,32 @@
+From ff4d8094623d73f0762666c458018a0222db297f Mon Sep 17 00:00:00 2001
+From: Rahul T R <r-ravikumar@ti.com>
+Date: Mon, 19 Feb 2024 14:45:10 +0530
+Subject: [PATCH] arm: dts: k3-j721s2-som: Hog gpio to enable DSI to eDP bridge
+
+When DSS is run on r5
+
+Signed-off-by: Rahul T R <r-ravikumar@ti.com>
+---
+ arch/arm/dts/k3-j721s2-som-p0.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/dts/k3-j721s2-som-p0.dtsi b/arch/arm/dts/k3-j721s2-som-p0.dtsi
+index 570c0442ba..70659bfe11 100644
+--- a/arch/arm/dts/k3-j721s2-som-p0.dtsi
++++ b/arch/arm/dts/k3-j721s2-som-p0.dtsi
+@@ -189,6 +189,12 @@
+ 				  "CANUART_MUX2_SEL0", "CANUART_MUX_SEL1",
+ 				  "GPIO_RGMII1_RST", "GPIO_eDP_ENABLE",
+ 				   "GPIO_LIN_EN", "CAN_STB";
++        P05-hog {
++			gpio-hog;
++			gpios = <5 GPIO_ACTIVE_HIGH>;
++			output-high;
++			line-name = "GPIO_eDP_ENABLE";
++		};
+ 	};
+ };
+ 
+-- 
+2.34.1
+

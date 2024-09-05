@@ -1,0 +1,34 @@
+SRC_URI += " \
+        file://VersionList.txt \
+	"
+ACOS_HOME = "/opt/autocore"
+do_write_version() {
+    echo "${WORKDIR}/VersionList.txt"
+    echo "ACOS_VER = ${ACOS_VER}" >> "${WORKDIR}/VersionList.txt"
+    echo "M7_VER = ${M7_VER}" >> "${WORKDIR}/VersionList.txt"
+    echo "XCU_SWITCH_VER = ${SWITCH_VER}" >> "${WORKDIR}/VersionList.txt"
+    echo "MANIFEST_NAME = ${MANIFEST_NAME}" >> "${WORKDIR}/VersionList.txt"
+    echo "AC-SOVDApp = ${AC-SOVDApp}" >> "${WORKDIR}/VersionList.txt"
+    echo "AC-APP = ${AC-APP}" >> "${WORKDIR}/VersionList.txt"
+    echo "AC-PMS = ${AC-PMS}" >> "${WORKDIR}/VersionList.txt"
+    echo "AC-CM = ${AC-CM}" >> "${WORKDIR}/VersionList.txt"
+    echo "AC-SysMonitor = ${AC-SysMonitor}" >> "${WORKDIR}/VersionList.txt"
+}
+
+do_install:append:acos-eea() {
+   wget -P ${WORKDIR} http://release.autocore.ai/Projects/ACEEA/ACEEA_APP/${AC-SOVDApp}/${AC-SOVDApp}-linux-aarch64.tar.gz
+   wget -P ${WORKDIR} http://release.autocore.ai/Projects/ACEEA/ACEEA_APP/${AC-APP}/${AC-APP}-linux-aarch64.tar.gz
+   wget -P ${WORKDIR} http://release.autocore.ai/PlatformService/pm/${AC-PMS}/${AC-PMS}-linux-aarch64.tar.gz
+   wget -P ${WORKDIR} http://release.autocore.ai/Runtime/CM/${AC-CM}/${AC-CM}-linux-aarch64.tar.gz
+   #wget -P ${WORKDIR} http://release.autocore.ai/Projects/AutoCore.SystemMonitor/${AC-SysMonitor}/${AC-SysMonitor}-linux-aarch64.tar.gz
+   wget -P ${WORKDIR} http://release.autocore.ai/ZG/ACPS/daily/SystemMonitor/ACB-18825/AutoCore.SystemMonitor-18825-linux-aarch64.tar.gz
+   tar --no-same-owner -zxf ${WORKDIR}/${AC-CM}-linux-aarch64.tar.gz -C ${ACOS_INSTALL_DIR}/ 
+   tar --no-same-owner -zxf ${WORKDIR}/${AC-SOVDApp}-linux-aarch64.tar.gz -C ${D}/
+   tar --no-same-owner -zxf ${WORKDIR}/${AC-APP}-linux-aarch64.tar.gz -C ${D}/
+   tar --no-same-owner -zxf ${WORKDIR}/${AC-PMS}-linux-aarch64.tar.gz -C ${ACOS_INSTALL_DIR}/apps/
+   #tar  --no-same-owner -zxf ${WORKDIR}/${AC-SysMonitor}-linux-aarch64.tar.gz -C ${ACOS_INSTALL_DIR}/
+   tar  --no-same-owner -zxf ${WORKDIR}/AutoCore.SystemMonitor-18825-linux-aarch64.tar.gz -C ${ACOS_INSTALL_DIR}/
+   install -m 644 ${WORKDIR}/VersionList.txt ${ACOS_INSTALL_DIR}
+}
+
+addtask write_version before do_install

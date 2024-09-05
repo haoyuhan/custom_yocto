@@ -1,0 +1,8 @@
+Common targets are:
+- meta-acos-customer layer:
+  - included by default
+    * acos-image-boot                (just enough to boot)
+    * acos-image-minimal             (minimal filesystem with APIs)
+    * acos-image-minimal-crosssdk    (crosssdk for ^^)
+    * acos-image-ti-edgeai           (fot ti edgeai)
+

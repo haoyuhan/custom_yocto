@@ -1,0 +1,27 @@
+From d725b846b070851b59e57e906112323104bf2c7a Mon Sep 17 00:00:00 2001
+From: Rahul T R <r-ravikumar@ti.com>
+Date: Fri, 21 Jul 2023 17:28:33 +0530
+Subject: [PATCH] arm64: defconfig: Enable CONFIG_GPIO_SYSFS
+
+Required for gpio lib
+
+Signed-off-by: Rahul T R <r-ravikumar@ti.com>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index e56a47228ac3..251fae4a676d 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -634,6 +634,7 @@ CONFIG_GPIO_PCA953X_IRQ=y
+ CONFIG_GPIO_BD9571MWV=m
+ CONFIG_GPIO_MAX77620=y
+ CONFIG_GPIO_SL28CPLD=m
++CONFIG_GPIO_SYSFS=y
+ CONFIG_POWER_RESET_MSM=y
+ CONFIG_POWER_RESET_QCOM_PON=m
+ CONFIG_POWER_RESET_XGENE=y
+-- 
+2.34.1
+

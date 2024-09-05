@@ -1,0 +1,11 @@
+# short-description: Create SD card image with 2 partitions and EFI support
+# long-description: Creates a partitioned SD card image for TI platforms that
+# supports EFI.  Boot files are located in the first vfat partition with extra
+# reserved space.  We cannot use a GPT here.
+
+part /boot --source bootimg-efi --ondisk ${REPART_DEV} --sourceparams="loader=${EFI_PROVIDER}" --fstype=vfat --label boot --active --align 1024 --use-uuid --fixed-size 128M
+part / --source rootfs --ondisk ${REPART_DEV} --fstype=ext4 --exclude-path ${ACOS_CUSTOME_EXCLUDE_ROOTFS}  --label root --align 1024 --use-uuid
+part /opt --source rootfs --ondisk ${REPART_DEV} --rootfs-dir=${IMAGE_ROOTFS}/opt  --fstype=ext4 --label acos --align 4096 --fixed-size 15360M
+part /custom --source rootfs --ondisk ${REPART_DEV} --rootfs-dir=${IMAGE_ROOTFS}/custom  --fstype=ext4 --label custom --align 4096 --fixed-size 10M 
+part /data --source rootfs --ondisk ${REPART_DEV} --rootfs-dir=${IMAGE_ROOTFS}/data  --fstype=ext4 --label data --align 4096 --fixed-size 10M 
+bootloader --timeout=3 --append="rootfstype=ext4"

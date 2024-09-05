@@ -1,0 +1,25 @@
+From 6e9fb0d588b11b4e066e1d551762f2be7c6f7045 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E9=9F=A9=E6=B6=9B?= <hantao8209@163.com>
+Date: Thu, 29 Aug 2024 11:08:17 +0800
+Subject: [PATCH] atf debug builid
+
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index e7194a73f..094d2e5a7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -305,7 +305,7 @@ ifneq (${DEBUG}, 0)
+ else
+         BUILD_TYPE	:=	release
+         # Use LOG_LEVEL_NOTICE by default for release builds
+-        LOG_LEVEL	:=	20
++        LOG_LEVEL	:=	40
+ endif
+ 
+ # Default build string (git branch and commit)
+-- 
+2.42.0
+

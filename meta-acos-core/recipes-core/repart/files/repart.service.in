@@ -1,0 +1,12 @@
+[Unit]
+Description=Service to resizing parition
+DefaultDependencies=no
+Before=@mount-service@.mount custom.mount
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/repart.sh
+
+[Install]
+WantedBy=local-fs.target

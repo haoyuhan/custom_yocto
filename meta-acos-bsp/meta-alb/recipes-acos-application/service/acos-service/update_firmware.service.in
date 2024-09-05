@@ -1,0 +1,11 @@
+[Unit]
+Description=Acos update firmware 
+Wants=network-online.target
+After=network.target
+
+[Service]
+ExecStart=@ACOS_HOME@/bin/update_firmware.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

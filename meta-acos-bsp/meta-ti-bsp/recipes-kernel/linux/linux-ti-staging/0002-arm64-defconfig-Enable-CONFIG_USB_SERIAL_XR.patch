@@ -1,0 +1,28 @@
+From b6daddf026e05cb4b508a2565c9c3348e842ad3f Mon Sep 17 00:00:00 2001
+From: Rahul T R <r-ravikumar@ti.com>
+Date: Tue, 5 Mar 2024 00:29:54 +0530
+Subject: [PATCH 2/2] arm64: defconfig: Enable CONFIG_USB_SERIAL_XR
+
+required for the mmWave radar sensor from D3
+This is planned to be supported in Robotics SDK
+
+Signed-off-by: Rahul T R <r-ravikumar@ti.com>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 82dbb4c94903..2c37aee33984 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -981,6 +981,7 @@ CONFIG_USB_SERIAL=m
+ CONFIG_USB_SERIAL_CP210X=m
+ CONFIG_USB_SERIAL_FTDI_SIO=m
+ CONFIG_USB_SERIAL_OPTION=m
++CONFIG_USB_SERIAL_XR=m
+ CONFIG_USB_HSIC_USB3503=y
+ CONFIG_NOP_USB_XCEIV=y
+ CONFIG_USB_GADGET=y
+-- 
+2.34.1
+

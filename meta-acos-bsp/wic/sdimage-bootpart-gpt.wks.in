@@ -1,0 +1,9 @@
+# short-description: Create SD card image with a boot partition
+# long-description: Creates a partitioned SD card image. Boot files
+# are located in the first vfat partition.
+# size is M 
+# align is KB
+part /boot --source bootimg-partition --ondisk ${REPART_DEV} --fstype=vfat --label boot --part-name boot --active --align ${IMAGE_ROOTFS_ALIGNMENT} --fixed-size ${IMAGE_BOOT_SIZE}M --use-uuid
+part / --source rootfs --ondisk ${REPART_DEV} --fstype=ext4 --exclude-path ${ACOS_CUSTOME_EXCLUDE_ROOTFS}  --label root --part-name root --align ${IMAGE_ALIGNMENT} --fixed-size ${IMAGE_ROOTFS_SIZE}M --use-uuid
+part /opt --source rootfs --ondisk ${REPART_DEV} --rootfs-dir=${IMAGE_ROOTFS}/opt  --fstype=ext4 --label acos --part-name acos --align ${IMAGE_ALIGNMENT} --fixed-size ${IMAGE_ACOS_SIZE}M --use-uuid
+bootloader --ptable gpt

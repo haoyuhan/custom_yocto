@@ -1,0 +1,274 @@
+From 3877581a337794cffbad2ad438f02d497a6dd75e Mon Sep 17 00:00:00 2001
+From: Rahul T R <r-ravikumar@ti.com>
+Date: Tue, 18 Oct 2022 10:40:25 -0500
+Subject: [PATCH] arm64: dts: ti: j722s: Add DTB overlay for RTOS memory map
+
+vision-apps.dtbo also disables capture and display related
+peripherals from Linux so that it can be used by RTOS
+
+Signed-off-by: Rahul T R <r-ravikumar@ti.com>
+---
+ arch/arm64/boot/dts/ti/Makefile               |   2 +
+ .../boot/dts/ti/k3-j722s-edgeai-apps.dtso     |  11 ++
+ .../boot/dts/ti/k3-j722s-rtos-memory-map.dtsi | 175 ++++++++++++++++++
+ .../boot/dts/ti/k3-j722s-vision-apps.dtso     |  35 ++++
+ 4 files changed, 223 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-edgeai-apps.dtso
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-rtos-memory-map.dtsi
+ create mode 100644 arch/arm64/boot/dts/ti/k3-j722s-vision-apps.dtso
+
+diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
+index 808d649ec243..acd1bee5415e 100644
+--- a/arch/arm64/boot/dts/ti/Makefile
++++ b/arch/arm64/boot/dts/ti/Makefile
+@@ -113,6 +113,8 @@ dtb-$(CONFIG_ARCH_K3) += k3-j721s2-evm-gesi-exp-board.dtbo
+ dtb-$(CONFIG_ARCH_K3) += k3-j721s2-evm-pcie1-ep.dtbo
+ 
+ # Boards with J722s SoC
++dtb-$(CONFIG_ARCH_K3) += k3-j722s-vision-apps.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-j722s-edgeai-apps.dtbo
+ dtb-$(CONFIG_ARCH_K3) += k3-j722s-evm.dtb
+ dtb-$(CONFIG_ARCH_K3) += k3-j722s-evm-csi2-ov5640.dtbo
+ dtb-$(CONFIG_ARCH_K3) += k3-j722s-evm-csi2-rpi-cam-imx219.dtbo
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-edgeai-apps.dtso b/arch/arm64/boot/dts/ti/k3-j722s-edgeai-apps.dtso
+new file mode 100644
+index 000000000000..44e7b6e7d72e
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-j722s-edgeai-apps.dtso
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * vision-apps: device-tree overlay
++ *
++ * Copyright (C) 2019 - 2021 Texas Instruments Incorporated - http://www.ti.com/
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include "k3-j722s-rtos-memory-map.dtsi"
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-rtos-memory-map.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-rtos-memory-map.dtsi
+new file mode 100644
+index 000000000000..ff9c7c9fbd1e
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-j722s-rtos-memory-map.dtsi
+@@ -0,0 +1,175 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Vision-apps: device-tree overlay
++ *
++ * Copyright (C) 2019 Texas Instruments Incorporated - http://www.ti.com/
++ */
++
++#include <dt-bindings/soc/ti,sci_pm_domain.h>
++
++/dts-v1/;
++/plugin/;
++
++&{/} {
++	dma_buf_phys {
++		compatible = "ti,dma-buf-phys";
++	};
++};
++
++&wkup_r5fss0_core0_memory_region {
++	status = "disabled";
++};
++
++&wkup_r5fss0_core0_dma_memory_region {
++	status = "disabled";
++};
++
++&mcu_r5fss0_core0_memory_region {
++	status = "disabled";
++};
++
++&mcu_r5fss0_core0_dma_memory_region {
++	status = "disabled";
++};
++
++&main_r5fss0_core0_dma_memory_region {
++	status = "disabled";
++};
++
++&main_r5fss0_core0_memory_region {
++	status = "disabled";
++};
++
++&c7x_0_dma_memory_region {
++	status = "disabled";
++};
++
++&c7x_0_memory_region {
++	status = "disabled";
++};
++
++&c7x_1_dma_memory_region {
++	status = "disabled";
++};
++
++&c7x_1_memory_region {
++	status = "disabled";
++};
++
++&rtos_ipc_memory_region {
++	status = "disabled";
++};
++
++&reserved_memory {
++	#address-cells = <2>;
++	#size-cells = <2>;
++
++	vision_apps_wkup_r5fss0_core0_dma_memory_region: vision-apps-r5f-dma-memory@a0000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa0000000 0x00 0x00100000>;
++		no-map;
++	};
++	vision_apps_wkup_r5fss0_core0_memory_region: vision-apps-r5f-memory@a0100000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa0100000 0x00 0x00f00000>;
++		no-map;
++	};
++	vision_apps_mcu_r5fss0_core0_dma_memory_region: vision-apps-r5f-dma-memory@a1000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa1000000 0x00 0x00100000>;
++		no-map;
++	};
++	vision_apps_mcu_r5fss0_core0_memory_region: vision-apps-r5f-memory@a1100000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa1100000 0x00 0x00f00000>;
++		no-map;
++	};
++	vision_apps_main_r5fss0_core0_dma_memory_region: vision-apps-r5f-dma-memory@a2000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa2000000 0x00 0x00100000>;
++		no-map;
++	};
++	vision_apps_main_r5fss0_core0_memory_region: vision-apps-r5f-memory@a2100000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa2100000 0x00 0x01f00000>;
++		no-map;
++	};
++	vision_apps_rtos_ipc_memory_region: vision-apps-rtos-ipc-memory-region@a5000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa5000000 0x00 0x02000000>;
++		no-map;
++	};
++	vision_apps_memory_region: vision-apps-dma-memory@a7000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xa7000000 0x00 0x06000000>;
++		no-map;
++	};
++	vision_apps_c71_0_dma_memory_region: vision-apps-c71-dma-memory@ad000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xad000000 0x00 0x00100000>;
++		no-map;
++	};
++	vision_apps_c71_0_memory_region: vision-apps-c71_0-memory@ad100000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xad100000 0x00 0x03f00000>;
++		no-map;
++	};
++	vision_apps_c71_1_dma_memory_region: vision-apps-c71_1-dma-memory@b1000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xb1000000 0x00 0x00100000>;
++		no-map;
++	};
++	vision_apps_c71_1_memory_region: vision-apps-c71_1-memory1b1100000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xb1100000 0x00 0x03f00000>;
++		no-map;
++	};
++	vision_apps_core_heaps_lo: vision-apps-core-heap-memory-lo@b5000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x00 0xb5000000 0x00 0x02800000>;
++		no-map;
++	};
++	vision_apps_core_heaps_hi: vision-apps-core-heap-memory-hi@880000000 {
++		compatible = "shared-dma-pool";
++		reg = <0x08 0x80000000 0x00 0x20000000>;
++		no-map;
++	};
++	vision_apps_shared_region: vision_apps_shared-memories {
++		compatible = "dma-heap-carveout";
++		reg = <0x09 0x00000000 0x00 0x20000000>;
++	};
++    linux,cma {
++        status = "disabled";
++    };
++    linux_cma_region: linux-cma-buffers@980000000 {
++        compatible = "shared-dma-pool";
++        reusable;
++        reg = <0x09 0x80000000 0x00 0x38000000>;
++        linux,cma-default;
++    };
++};
++
++&wkup_r5fss0_core0 {
++	memory-region = <&vision_apps_wkup_r5fss0_core0_dma_memory_region>,
++			<&vision_apps_wkup_r5fss0_core0_memory_region>;
++};
++
++&mcu_r5fss0_core0 {
++	memory-region = <&vision_apps_mcu_r5fss0_core0_dma_memory_region>,
++			<&vision_apps_mcu_r5fss0_core0_memory_region>;
++};
++
++&main_r5fss0_core0 {
++	memory-region = <&vision_apps_main_r5fss0_core0_dma_memory_region>,
++			<&vision_apps_main_r5fss0_core0_memory_region>;
++};
++
++&c7x_0 {
++	memory-region = <&vision_apps_c71_0_dma_memory_region>,
++			<&vision_apps_c71_0_memory_region>;
++};
++
++&c7x_1 {
++	memory-region = <&vision_apps_c71_1_dma_memory_region>,
++			<&vision_apps_c71_1_memory_region>;
++};
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-vision-apps.dtso b/arch/arm64/boot/dts/ti/k3-j722s-vision-apps.dtso
+new file mode 100644
+index 000000000000..f4b5ad1136aa
+--- /dev/null
++++ b/arch/arm64/boot/dts/ti/k3-j722s-vision-apps.dtso
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * vision-apps: device-tree overlay
++ *
++ * Copyright (C) 2019 - 2021 Texas Instruments Incorporated - http://www.ti.com/
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include "k3-j722s-rtos-memory-map.dtsi"
++
++&main_i2c1 {
++    status = "disabled";
++};
++
++&main_i2c2 {
++    status = "disabled";
++};
++
++&dss1 {
++    status = "disabled";
++};
++
++&ti_csi2rx1 {
++    status = "disabled";
++};
++
++&ti_csi2rx2 {
++    status = "disabled";
++};
++
++&ti_csi2rx3 {
++    status = "disabled";
++};
+-- 
+2.34.1
+

@@ -1,0 +1,39 @@
+#!/bin/bash - 
+#===============================================================================
+#
+#          FILE:  repart.sh
+# 
+#         USAGE:  ./repart.sh 
+# 
+#   DESCRIPTION:  
+# 
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR: YOUR NAME (), 
+#       COMPANY: 
+#       CREATED: 2024年05月23日 11时05分29秒 CST
+#      REVISION:  ---
+#===============================================================================
+repart-ext-no = @repart-ext-no@
+repart-no = @repart-no@
+# If /.autorepart placed, the data will resizepart
+if [ -f /usr/sbin/.autorepart ]; then
+        echo "ACOS Repart data ..."
+	if [ -n "${repart-ext-no}" ]; then
+        /usr/sbin/parted --script @repart-dev@ resizepart ${repart-ext-no} 100%
+	fi
+	if [ -n "${repart-no}" ]; then
+        /usr/sbin/parted --script @repart-dev@ resizepart ${repart-no} 100%
+	fi
+        /sbin/e2fsck -p @repart-dev@p@repart-no@
+        /bin/rm -f /usr/sbin/.autorepart
+#        /bin/rm -f /usr/sbin/parted
+	systemctl disable repart
+        echo " * repart done, rebooting the system?"
+        exit 0
+fi
+exit 0
+
+
